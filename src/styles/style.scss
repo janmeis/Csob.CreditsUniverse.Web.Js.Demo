@@ -1,0 +1,15 @@
+@import "@progress/kendo-theme-bootstrap/dist/all.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.example-container {
+  margin: 3rem 0;
+  .k-table-th,
+  .k-table-td {
+    &> .w100 {
+      width: 100%;
+    }
+    &> .align-center {
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,134 @@
+<div class="container">
+  <div class="example">
+    <form class="k-form k-form-md" [formGroup]="form">
+      <h5>BOOK YOUR DREAM VACATION TODAY</h5>
+      <div class="row">
+        <div class="col">
+          <kendo-formfield>
+            <kendo-label [for]="fullName" text="Full Name"></kendo-label>
+            <kendo-textbox formControlName="fullName" [clearButton]="true" #fullName required></kendo-textbox>
+
+            <kendo-formerror>Error: Full Name is required</kendo-formerror>
+          </kendo-formfield>
+        </div>
+        <div class="col">
+          <kendo-formfield>
+            <kendo-label [for]="email" text="Email"></kendo-label>
+            <kendo-textbox formControlName="email" [clearButton]="true" #email required></kendo-textbox>
+
+            <kendo-formerror *ngIf="form.controls['email'].errors?.['required']">Error: Email is required</kendo-formerror>
+            <kendo-formerror *ngIf="form.controls['email'].errors?.['email']">Error: Not valid email format</kendo-formerror>
+          </kendo-formfield>
+        </div>
+        <div class="col">
+      <kendo-formfield>
+        <kendo-label [for]="phoneNumber" text="Phone Number"></kendo-label>
+        <kendo-maskedtextbox
+          #phoneNumber
+          formControlName="phoneNumber"
+          [mask]="phoneNumberMask"
+          [value]="phoneNumberValue"></kendo-maskedtextbox>
+        <kendo-formerror>
+          <div *ngIf="form.controls['phoneNumber'].errors">Error: Not a valid phone number format</div>
+          <div *ngIf="form.controls['phoneNumber'].errors?.['required']">Error: Phone number is required</div>
+        </kendo-formerror>
+      </kendo-formfield>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <kendo-formfield class="arrival-date">
+            <kendo-label [for]="arrivalDate" text="Arrival Date"></kendo-label>
+            <kendo-datepicker #arrivalDate formControlName="arrivalDate" [max]="now" format="dd.MM.yyyy"></kendo-datepicker>
+            <kendo-formerror>Error: Arrival date is required</kendo-formerror>
+          </kendo-formfield>
+          </div>
+        <div class="col">
+          <kendo-formfield>
+            <kendo-label [for]="numberOfNights" text="Number of Nights"></kendo-label>
+            <kendo-numerictextbox #numberOfNights formControlName="numberOfNights" [min]="0"></kendo-numerictextbox>
+            <kendo-formerror>Error: required</kendo-formerror>
+          </kendo-formfield>
+        </div>
+        <div class="col">
+          <kendo-formfield>
+            <kendo-label [for]="numberOfGuests" text="Number of Guests"></kendo-label>
+            <kendo-numerictextbox #numberOfGuests formControlName="numberOfGuests" [min]="0" [max]="5" format="decimal"></kendo-numerictextbox>
+            <kendo-formhint align="start">
+              Maximum 5 guests. Babies (under 2 years old) are not included in the number of guests.
+            </kendo-formhint>
+            <kendo-formerror *ngIf="form.controls['numberOfGuests'].errors?.['required']">Error: Number of guests is required</kendo-formerror>
+
+            <kendo-formerror *ngIf="form.controls['numberOfGuests'].errors?.['max']">Error: Maximum 5 guests</kendo-formerror>
+          </kendo-formfield>
+        </div>
+      </div>
+
+      <div class="row" [style.marginTop]="'-1rem'">
+        <div class="col">
+          <kendo-formfield>
+            <div class="k-form-field-checkbox-wrap">
+              <input kendoCheckBox id="terms" type="checkbox" formControlName="terms" />
+              <kendo-label class="k-checkbox-label" for="terms" text="I agree with Тerms and Conditions"></kendo-label>
+            </div>
+            <kendo-formerror>Error: This field is required</kendo-formerror>
+          </kendo-formfield>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <kendo-formfield>
+            <kendo-label [for]="comments" text="Comments" [optional]="true"></kendo-label>
+            <kendo-textarea #comments formControlName="comments" resizable="vertical"></kendo-textarea>
+          </kendo-formfield>
+        </div>
+      </div>
+
+      <div class="k-form-buttons">
+        <button kendoButton themeColor="primary" (click)="submitForm()" [disabled]="form.invalid">Send Reservation Request</button>
+        <button kendoButton (click)="clearForm()">Clear</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="example-container">
+    <kendo-grid
+      [data]="gridData"
+      [filterable]="true"
+      [filter]="filter"
+      [pageable]="{ pageSizes: [5, 10 , 20, 50]}"
+      [pageSize]="grid.take"
+      [skip]="grid.skip"
+      (pageChange)="pageChange($event)"
+      (filterChange)="filterChange($event)">
+      <kendo-grid-column field="ProductID" title="ID">
+      </kendo-grid-column>
+      <kendo-grid-column field="ProductName" title="Product Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="UnitPrice" title="Unit Price" filter="numeric" format="c">
+      </kendo-grid-column>
+      <kendo-grid-column field="Discontinued" title="Disc." [width]="100">
+        <ng-template kendoGridFilterCellTemplate="discontinuedFilter" let-filter="filter">
+          <div class="w100 align-center">
+            <kendo-checkbox #checkboxFilter [checkedState]="filter?.value || 'indeterminate'" (checkedStateChange)="onCheckedStateChange(checkboxFilter)"></kendo-checkbox>
+          </div>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="w100 align-center">
+            <kendo-checkbox [checkedState]="dataItem.Discontinued" [disabled]="true"></kendo-checkbox>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="FirstOrderedOn" title="First Ordered On">
+        <ng-template kendoGridFilterCellTemplate let-filter="filter">
+          <app-grid-date-filter [filter]="filter" [field]="'FirstOrderedOn'"></app-grid-date-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.FirstOrderedOn | localDate:'dd.MM.yyyy' }}
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>
