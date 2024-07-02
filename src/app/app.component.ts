@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { CheckBoxComponent } from '@progress/kendo-angular-inputs';
-import { CompositeFilterDescriptor, filterBy, FilterDescriptor, State } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor, distinct, FilterDescriptor, process, State } from '@progress/kendo-data-query';
 import { sampleProducts } from './products';
 
 @Component({
@@ -10,7 +10,7 @@ import { sampleProducts } from './products';
   templateUrl: './app.component.html',
   styles: []
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'Csob.CreditsUniverse.Web.Js.Demo';
 
   phoneNumberValue: string = '';
@@ -31,15 +31,17 @@ export class AppComponent implements OnInit{
   };
   gridData: GridDataResult = { data: [], total: 0 };
 
-  filter: CompositeFilterDescriptor = {
-    logic: 'and',
-    filters: []
-  };
-
-  grid = {
+  state = {
     skip: 0,
-    take: 5
+    take: 10,
+    sort: [],
+    filter: {
+      logic: 'and',
+      filters: []
+    } as CompositeFilterDescriptor
   } as State;
+
+  categories: { text: string, value: number; descripiton: string}[] = [];
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -55,6 +57,8 @@ export class AppComponent implements OnInit{
 
     this.now.setHours(0, 0, 0, 0);
     this.loadData();
+    this.categories = this.getCategories();
+    console.log(this.categories);
   }
 
   submitForm(): void {
@@ -65,20 +69,25 @@ export class AppComponent implements OnInit{
     this.form.reset();
   }
 
+  getCategories(): { text: string, value: number; descripiton: string; }[] {
+    const categories =sampleProducts.map(p => p.Category).map(c => ({ text: c.CategoryName, value: c.CategoryID, descripiton: c.Description }));
+    return distinct(categories, 'value').sort((a, b) => a.value - b.value);
+  }
+
   pageChange(pageChange: PageChangeEvent) {
-    this.grid = { ...this.grid, ...pageChange };
+    this.state = { ...this.state, ...pageChange };
     this.loadData();
   }
 
   filterChange(filter: CompositeFilterDescriptor): void {
-    this.filter = filter;
+    this.state = { ...this.state, filter: filter };
     this.loadData();
   }
 
-  onCheckedStateChange(checkboxFilter: CheckBoxComponent): void {
+  onCheckedStateChange(checkboxFilter: CheckBoxComponent, field: string): void {
     let checkedState = checkboxFilter.checkedState;
-    const prevFilter = (this.filter.filters.find((f) => (f as FilterDescriptor).field === 'Discontinued') as FilterDescriptor)?.value as boolean | undefined;
-    let filters = [...this.filter.filters.filter((f) => (f as FilterDescriptor).field !== 'Discontinued')];
+    const prevFilter = this.findFilter(this.state.filter, field)?.value as boolean | undefined;
+    let filters = this.removeFilter(this.state.filter, field);
     if (checkedState === true && prevFilter === false)
       checkboxFilter.checkedState = 'indeterminate';
     else {
@@ -87,14 +96,18 @@ export class AppComponent implements OnInit{
         checkboxFilter.checkedState = checkedState;
       }
 
-      filters = [...filters, { field: 'Discontinued', operator: 'eq', value: checkedState }];
+      filters = [...filters, { field: field, operator: 'eq', value: checkedState }];
     }
-    const filter = { logic: 'and', filters };
-    this.filterChange(filter as CompositeFilterDescriptor);
+    this.filterChange({ logic: 'and', filters });
   }
 
-  loadData(): void {
-    const data = filterBy(sampleProducts, this.filter) || [];
-    this.gridData = {data: data.slice(this.grid.skip || 0, (this.grid.skip || 0) + (this.grid.take || 5)), total: data.length};
+  private removeFilter = (filter?: CompositeFilterDescriptor, field?: string): FilterDescriptor[] =>
+    (filter?.filters as FilterDescriptor[]).filter(f => f.field !== field);
+
+  private findFilter = (filter?: CompositeFilterDescriptor, field?: string) : FilterDescriptor | undefined =>
+    (filter?.filters as FilterDescriptor[]).find(f => f.field === field);
+
+  private loadData(): void {
+    this.gridData = process(sampleProducts, this.state);
   }
 }

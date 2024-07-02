@@ -97,36 +97,44 @@
     <kendo-grid
       [data]="gridData"
       [filterable]="true"
-      [filter]="filter"
-      [pageable]="{ pageSizes: [5, 10 , 20, 50]}"
-      [pageSize]="grid.take"
-      [skip]="grid.skip"
+      [filter]="state.filter"
+      [pageable]="{ pageSizes: [5, 10 , 20, 50],}"
+      [pageSize]="state.take"
+      [skip]="state.skip"
       (pageChange)="pageChange($event)"
       (filterChange)="filterChange($event)">
-      <kendo-grid-column field="ProductID" title="ID">
+      <kendo-grid-column field="ProductID" title="ID" [width]="100" [filterable]="false">
       </kendo-grid-column>
       <kendo-grid-column field="ProductName" title="Product Name">
       </kendo-grid-column>
       <kendo-grid-column field="UnitPrice" title="Unit Price" filter="numeric" format="c">
       </kendo-grid-column>
+      <kendo-grid-column field="CategoryID" title="Categories" [width]="200">
+        <ng-template kendoGridFilterCellTemplate let-filter="filter" let-column="column">
+          <app-grid-dropdown-filter [filter]="filter" [field]="column.field" [data]="categories"></app-grid-dropdown-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.Category.CategoryName }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="FirstOrderedOn" title="First Ordered On">
+        <ng-template kendoGridFilterCellTemplate let-filter="filter" let-column="column">
+          <app-grid-date-filter [filter]="filter" [field]="column.field"></app-grid-date-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.FirstOrderedOn | localDate:'dd.MM.yyyy' }}
+        </ng-template>
+      </kendo-grid-column>
       <kendo-grid-column field="Discontinued" title="Disc." [width]="100">
-        <ng-template kendoGridFilterCellTemplate="discontinuedFilter" let-filter="filter">
+        <ng-template kendoGridFilterCellTemplate="discontinuedFilter" let-filter="filter" let-column="column">
           <div class="w100 align-center">
-            <kendo-checkbox #checkboxFilter [checkedState]="filter?.value || 'indeterminate'" (checkedStateChange)="onCheckedStateChange(checkboxFilter)"></kendo-checkbox>
+            <kendo-checkbox #checkboxFilter [checkedState]="filter?.value || 'indeterminate'" (checkedStateChange)="onCheckedStateChange(checkboxFilter, column.field)"></kendo-checkbox>
           </div>
         </ng-template>
         <ng-template kendoGridCellTemplate let-dataItem>
           <div class="w100 align-center">
             <kendo-checkbox [checkedState]="dataItem.Discontinued" [disabled]="true"></kendo-checkbox>
           </div>
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="FirstOrderedOn" title="First Ordered On">
-        <ng-template kendoGridFilterCellTemplate let-filter="filter">
-          <app-grid-date-filter [filter]="filter" [field]="'FirstOrderedOn'"></app-grid-date-filter>
-        </ng-template>
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.FirstOrderedOn | localDate:'dd.MM.yyyy' }}
         </ng-template>
       </kendo-grid-column>
     </kendo-grid>

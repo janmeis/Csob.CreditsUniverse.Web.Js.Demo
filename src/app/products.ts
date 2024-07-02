@@ -15,7 +15,7 @@ export const sampleProducts = [
       "CategoryName": "Beverages",
       "Description": "Soft drinks, coffees, teas, beers, and ales"
     },
-    "FirstOrderedOn": new Date(1996, 8, 20)
+    "FirstOrderedOn": new Date(2016, 8, 20)
   },
   {
     "ProductID": 2,
@@ -33,7 +33,7 @@ export const sampleProducts = [
       "CategoryName": "Beverages",
       "Description": "Soft drinks, coffees, teas, beers, and ales"
     },
-    "FirstOrderedOn": new Date(1996, 7, 12)
+    "FirstOrderedOn": new Date(2016, 7, 12)
   },
   {
     "ProductID": 3,
@@ -51,7 +51,7 @@ export const sampleProducts = [
       "CategoryName": "Condiments",
       "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
     },
-    "FirstOrderedOn": new Date(1996, 8, 26)
+    "FirstOrderedOn": new Date(2016, 8, 26)
   },
   {
     "ProductID": 4,
@@ -69,7 +69,7 @@ export const sampleProducts = [
       "CategoryName": "Condiments",
       "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
     },
-    "FirstOrderedOn": new Date(1996, 9, 19)
+    "FirstOrderedOn": new Date(2016, 9, 19)
   },
   {
     "ProductID": 5,
@@ -87,7 +87,7 @@ export const sampleProducts = [
       "CategoryName": "Condiments",
       "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
     },
-    "FirstOrderedOn": new Date(1996, 7, 17)
+    "FirstOrderedOn": new Date(2016, 7, 17)
   },
   {
     "ProductID": 6,
@@ -105,7 +105,7 @@ export const sampleProducts = [
       "CategoryName": "Condiments",
       "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
     },
-    "FirstOrderedOn": new Date(1996, 9, 19)
+    "FirstOrderedOn": new Date(2016, 9, 19)
   },
   {
     "ProductID": 7,
@@ -123,7 +123,7 @@ export const sampleProducts = [
       "CategoryName": "Produce",
       "Description": "Dried fruit and bean curd"
     },
-    "FirstOrderedOn": new Date(1996, 7, 22)
+    "FirstOrderedOn": new Date(2016, 7, 22)
   },
   {
     "ProductID": 8,
@@ -141,7 +141,7 @@ export const sampleProducts = [
       "CategoryName": "Condiments",
       "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
     },
-    "FirstOrderedOn": new Date(1996, 11, 1)
+    "FirstOrderedOn": new Date(2016, 11, 1)
   },
   {
     "ProductID": 9,
@@ -159,7 +159,7 @@ export const sampleProducts = [
       "CategoryName": "Meat/Poultry",
       "Description": "Prepared meats"
     },
-    "FirstOrderedOn": new Date(1997, 1, 21)
+    "FirstOrderedOn": new Date(2017, 1, 21)
   },
   {
     "ProductID": 10,
@@ -177,7 +177,7 @@ export const sampleProducts = [
       "CategoryName": "Seafood",
       "Description": "Seaweed and fish"
     },
-    "FirstOrderedOn": new Date(1996, 8, 5)
+    "FirstOrderedOn": new Date(2016, 8, 5)
   }
 ];
 
