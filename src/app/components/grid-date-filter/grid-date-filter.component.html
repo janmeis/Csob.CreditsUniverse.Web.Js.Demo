@@ -1,15 +1,14 @@
 <div class="dropdown-container">
   <kendo-dateinput
-    #anchor
+    #dateInputAnchor
     [value]="selectedValue"
     (valueChange)="onValueChange($event)"
-    format="dd.MM.yyyy">
+    format="dd.MM.yyyy"
+    (focus)="togglePopup(dateInputAnchor.inputElement)"
+    >
   </kendo-dateinput>
-  <div class="input-group-append">
-    <i class="input-group-text fa fa-calendar" (click)="show=!show" (keydown)="show=!show" tabindex="0"></i>
+  <div #inputGroupAnchor class="input-group-append">
+    <i class="input-group-text fa fa-calendar" (click)="togglePopup(dateInputAnchor.inputElement)" (keydown)="togglePopup(dateInputAnchor.inputElement)" tabindex="0"></i>
   </div>
   <i class="fa fa-times" [style.display]="selectedValue ? 'block' : 'none'" (click)="onRemoveFilterClick()" (keydown)="onRemoveFilterClick()" tabindex="1"></i>
 </div>
-<kendo-popup [anchor]="anchor.inputElement" *ngIf="show">
-  <div style="padding: 30px; background-color: #fcf7f8">Popup content.</div>
-</kendo-popup>

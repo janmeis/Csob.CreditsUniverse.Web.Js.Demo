@@ -12,6 +12,7 @@ import { sampleProducts } from './products';
 })
 export class AppComponent implements OnInit {
   title = 'Csob.CreditsUniverse.Web.Js.Demo';
+  expanded = false;
 
   phoneNumberValue: string = '';
   phoneNumberMask: string = '(999) 000-00-00-00';
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
     } as CompositeFilterDescriptor
   } as State;
 
-  categories: { text: string, value: number; descripiton: string}[] = [];
+  categories: { text: string, value: number; descripiton: string; }[] = [];
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -56,9 +57,8 @@ export class AppComponent implements OnInit {
     });
 
     this.now.setHours(0, 0, 0, 0);
-    this.loadData();
+    this.gridData = this.loadData();
     this.categories = this.getCategories();
-    console.log(this.categories);
   }
 
   submitForm(): void {
@@ -76,12 +76,12 @@ export class AppComponent implements OnInit {
 
   pageChange(pageChange: PageChangeEvent) {
     this.state = { ...this.state, ...pageChange };
-    this.loadData();
+    this.gridData = this.loadData();
   }
 
   filterChange(filter: CompositeFilterDescriptor): void {
     this.state = { ...this.state, filter: filter };
-    this.loadData();
+    this.gridData = this.loadData();
   }
 
   onCheckedStateChange(checkboxFilter: CheckBoxComponent, field: string): void {
@@ -107,7 +107,8 @@ export class AppComponent implements OnInit {
   private findFilter = (filter?: CompositeFilterDescriptor, field?: string) : FilterDescriptor | undefined =>
     (filter?.filters as FilterDescriptor[]).find(f => f.field === field);
 
-  private loadData(): void {
-    this.gridData = process(sampleProducts, this.state);
+  private loadData(): GridDataResult {
+    const gridData = process(sampleProducts, this.state);
+    return gridData;
   }
 }

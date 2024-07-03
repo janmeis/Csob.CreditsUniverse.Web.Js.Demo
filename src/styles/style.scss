@@ -12,4 +12,37 @@
       text-align: center;
     }
   }
+  .dropdown-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .fa.fa-times {
+      z-index: 1;
+      position: absolute;
+      right: 2.8rem;
+      top: .75rem;
+      transform: scale(0.8);
+      opacity: 0.75;
+      &:hover {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  }
+}
+kendo-calendar {
+  .k-calendar.k-calendar-md{
+    padding-bottom: 1.5rem !important;
+    .k-calendar-header{
+        background-color: var(--kendo-color-base, #dee2e6);
+        flex-direction: row-reverse;
+        &>.k-button.k-button-md:first-child {
+          // display: none;
+        }
+        &.k-calendar-nav {
+          width: 100%;
+        }
+    }
+  }
 }

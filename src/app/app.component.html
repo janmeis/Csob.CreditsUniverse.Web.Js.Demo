@@ -1,7 +1,6 @@
 <div class="container">
-  <div class="example">
+  <kendo-expansionpanel title="BOOK YOUR DREAM VACATION TODAY" [expanded]="expanded" (action)="expanded=!expanded">
     <form class="k-form k-form-md" [formGroup]="form">
-      <h5>BOOK YOUR DREAM VACATION TODAY</h5>
       <div class="row">
         <div class="col">
           <kendo-formfield>
@@ -91,7 +90,7 @@
         <button kendoButton (click)="clearForm()">Clear</button>
       </div>
     </form>
-  </div>
+  </kendo-expansionpanel>
 
   <div class="example-container">
     <kendo-grid

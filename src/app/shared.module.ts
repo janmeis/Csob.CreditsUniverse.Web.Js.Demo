@@ -11,6 +11,7 @@ import { GridModule } from '@progress/kendo-angular-grid'; // Import GridModule 
 import { InputsModule } from '@progress/kendo-angular-inputs'; // Import LabelModule from the correct package
 import { IntlModule } from "@progress/kendo-angular-intl";
 import { LabelModule } from '@progress/kendo-angular-label'; // Import LabelModule from the correct package
+import { LayoutModule } from '@progress/kendo-angular-layout';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export'; // Import PDFExportModule
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { TooltipModule } from '@progress/kendo-angular-tooltip'; // Import TooltipModule from the correct package
@@ -27,6 +28,7 @@ const kendoModules = [
   InputsModule,
   IntlModule,
   LabelModule,
+  LayoutModule,
   PDFExportModule,
   PopupModule,
   TooltipModule, // Add TooltipModule to the imports array
