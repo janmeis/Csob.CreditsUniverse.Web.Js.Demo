@@ -1,14 +1,16 @@
 <div class="dropdown-container">
-  <kendo-dateinput
-    #dateInputAnchor
+  <kendo-datepicker
+    #kendoDatePickerInstance="kendo-datepicker"
     [value]="selectedValue"
-    (valueChange)="onValueChange($event)"
-    format="dd.MM.yyyy"
-    (focus)="togglePopup(dateInputAnchor.inputElement)"
-    >
-  </kendo-dateinput>
-  <div #inputGroupAnchor class="input-group-append">
-    <i class="input-group-text fa fa-calendar" (click)="togglePopup(dateInputAnchor.inputElement)" (keydown)="togglePopup(dateInputAnchor.inputElement)" tabindex="0"></i>
-  </div>
-  <i class="fa fa-times" [style.display]="selectedValue ? 'block' : 'none'" (click)="onRemoveFilterClick()" (keydown)="onRemoveFilterClick()" tabindex="1"></i>
+    (valueChange)="setFilter($event)"
+    calendarType="classic"
+    [format]="dateFormat"
+    [clearButton]="true"
+    [footer]="true"
+    [animateCalendarNavigation]="true"
+    [popupSettings]="{ popupClass: 'kendo-datepicker-popup-class', animate: true }">
+    <ng-template kendoCalendarFooterTemplate let-date="date">
+      <a class="k-calendar-today" (click)="selectDate(date, kendoDatePickerInstance)" (keyup)="selectDate(date)" tabindex="0">{{date | localDate:'D'}}</a>
+    </ng-template>
+  </kendo-datepicker>
 </div>

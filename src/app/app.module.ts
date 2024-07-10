@@ -1,4 +1,5 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
+import { Locale, localeData } from '@progress/kendo-angular-intl';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DatePickerComponent } from './components/grid-date-filter/components/date-picker/date-picker.component';
@@ -8,7 +9,36 @@ import { LocalDatePipe } from './pipes/local-date.pipe';
 import { SharedModule } from './shared.module';
 
 import '@progress/kendo-angular-intl/locales/cs/all';
-import { PopupCalendarComponent } from './components/popup-calendar/popup-calendar.component';
+
+const csData: Locale = localeData('cs');
+csData.calendar!.months!.format!.wide = [
+  'Leden',
+  'Únor',
+  'Březen',
+  'Duben',
+  'Květen',
+  'Červen',
+  'Červenec',
+  'Srpen',
+  'Září',
+  'Říjen',
+  'Listopad',
+  'Prosinec'
+];
+csData.calendar!.months!.format!.abbreviated = [
+  'Led',
+  'Úno',
+  'Bře',
+  'Dub',
+  'Kvě',
+  'Čen',
+  'Čec',
+  'Srp',
+  'Zář',
+  'Říj',
+  'Lis',
+  'Pro'
+];
 
 @NgModule({
   declarations: [
@@ -16,14 +46,13 @@ import { PopupCalendarComponent } from './components/popup-calendar/popup-calend
     GridDateFilterComponent,
     LocalDatePipe,
     GridDropdownFilterComponent,
-    DatePickerComponent,
-    PopupCalendarComponent,
+    DatePickerComponent
   ],
   imports: [
     SharedModule,
     AppRoutingModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: "cs-CZ" }],
+  providers: [{ provide: LOCALE_ID, useValue: 'cs-CZ' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,10 +1,8 @@
-import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
-import { DateInputComponent } from '@progress/kendo-angular-dateinputs';
+import { Component, Input } from '@angular/core';
+import { DatePickerComponent } from '@progress/kendo-angular-dateinputs';
 import { BaseFilterCellComponent, FilterService } from '@progress/kendo-angular-grid';
-import { PopupAnimation, PopupRef, PopupService } from '@progress/kendo-angular-popup';
 import { CompositeFilterDescriptor, FilterOperator } from '@progress/kendo-data-query';
-import { PopupCalendarComponent } from '../popup-calendar/popup-calendar.component';
-import * as d from '@progress/kendo-date-math';
+import { addDays } from '@progress/kendo-date-math';
 
 @Component({
   selector: 'app-grid-date-filter',
@@ -14,10 +12,7 @@ import * as d from '@progress/kendo-date-math';
 export class GridDateFilterComponent extends BaseFilterCellComponent {
   @Input() override filter: CompositeFilterDescriptor = { logic: 'and', filters: [] };
   @Input() field = '';
-  @ViewChild('dateInputAnchor', { read: DateInputComponent }) dateInputAnchor: DateInputComponent | null = null;
-  @ViewChild('inputGroupAnchor', { read: ElementRef }) inputGroupAnchor: ElementRef | null = null;
-  private popupRef: PopupRef | null = null;
-  private animate: PopupAnimation = { type: 'slide', duration: 200, direction: 'down' };
+  dateFormat = 'dd.MM.yyyy';
 
   get selectedValue(): Date | null {
     const filter = this.filterByField(this.field);
@@ -25,59 +20,16 @@ export class GridDateFilterComponent extends BaseFilterCellComponent {
   }
 
   constructor(
-    filterService: FilterService,
-    private popupService: PopupService) {
+    filterService: FilterService) {
     super(filterService);
   }
 
-  togglePopup(dateInputAnchor?: ElementRef | HTMLElement): void {
-    if (this.popupRef) {
-      this.popupRef.close();
-      this.popupRef = null;
-    } else {
-      this.popupRef = this.popupService.open({
-        anchor: dateInputAnchor,
-        content: PopupCalendarComponent,
-        animate: this.animate,
-      });
-      this.popupRef.content.instance.popupRef = this.popupRef;
-      this.popupRef.content.instance.value = this.selectedValue;
-      this.popupRef.popupClose.subscribe(() => {
-        const value = this.popupRef?.content.instance.value;
-        this.setFilter(value);
-      });
-    }
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  public keydown(event: KeyboardEvent): void {
-    if (event.code === 'Escape' && this.popupRef) {
-      this.popupRef.close();
-      this.popupRef = null;
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  public documentClick(event: PointerEvent): void {
-    if (!this.contains((event as any).target) && this.popupRef) {
-      this.popupRef.close();
-      this.popupRef = null;
-    }
-  }
-
-  onRemoveFilterClick() {
-    this.applyFilter(this.removeFilter(this.field));
-  }
-
-  onValueChange(value?: Date): void {
-    if (this.popupRef) {
-      this.popupRef.close();
-      this.popupRef = null;
-    }
+  selectDate(value?: Date, datePicker?: DatePickerComponent) {
     this.setFilter(value);
+    datePicker?.toggle();
   }
 
-  private setFilter(value: Date | undefined) {
+  setFilter(value?: Date) {
     const filter = this.removeFilter(this.field);
     if (value !== null) {
       filter.filters = [...filter.filters, {
@@ -87,18 +39,10 @@ export class GridDateFilterComponent extends BaseFilterCellComponent {
       }, {
         field: this.field,
         operator: FilterOperator.LessThan,
-        value: d.addDays(value as Date, 1)
+        value: addDays(value as Date, 1)
       }];
     }
 
     this.applyFilter(filter);
-  }
-
-  private contains(target: EventTarget): boolean {
-    return (
-      (this.dateInputAnchor && this.dateInputAnchor.inputElement.contains(target)) ||
-      (this.inputGroupAnchor && this.inputGroupAnchor.nativeElement.contains(target)) ||
-      (this.popupRef && this.popupRef?.popup.location.nativeElement.contains(target))
-    );
   }
 }
