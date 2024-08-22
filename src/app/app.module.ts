@@ -9,6 +9,7 @@ import { LocalDatePipe } from './pipes/local-date.pipe';
 import { SharedModule } from './shared.module';
 
 import '@progress/kendo-angular-intl/locales/cs/all';
+import { provideHttpClient } from '@angular/common/http';
 
 const csData: Locale = localeData('cs');
 csData.calendar!.months!.format!.wide = [
@@ -52,7 +53,10 @@ csData.calendar!.months!.format!.abbreviated = [
     SharedModule,
     AppRoutingModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'cs-CZ' }],
+  providers: [
+    provideHttpClient(),
+    { provide: LOCALE_ID, useValue: 'cs-CZ' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
