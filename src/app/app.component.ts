@@ -4,12 +4,11 @@ import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { CheckBoxComponent } from '@progress/kendo-angular-inputs';
 import { CompositeFilterDescriptor, distinct, FilterDescriptor, process, State } from '@progress/kendo-data-query';
 import { sampleProducts } from './products';
-import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: []
+  styles: ``
 })
 export class AppComponent implements OnInit {
   title = 'Csob.CreditsUniverse.Web.Js.Demo';
@@ -44,10 +43,7 @@ export class AppComponent implements OnInit {
   } as State;
 
   categories: { text: string, value: number; descripiton: string; }[] = [];
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  selectedKeys: number[] = [];
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -64,13 +60,6 @@ export class AppComponent implements OnInit {
     this.now.setHours(0, 0, 0, 0);
     this.gridData = this.loadData();
     this.categories = this.getCategories();
-
-    // this.http.get('/api/user/appversioninfo').subscribe(console.log);
-    this.http.get('/api/user/currentuser').subscribe(console.log);
-    this.http.post('/api/party/search', { clientName: 'novak' }, {
-      headers: { 'X-LANGUAGE': 'cs' },
-      withCredentials: true
-    }).subscribe(console.log);
   }
 
   submitForm(): void {
@@ -111,6 +100,10 @@ export class AppComponent implements OnInit {
       filters = [...filters, { field: field, operator: 'eq', value: checkedState }];
     }
     this.filterChange({ logic: 'and', filters });
+  }
+
+  onButtonClick() {
+    console.log(this.selectedKeys);
   }
 
   private removeFilter = (filter?: CompositeFilterDescriptor, field?: string): FilterDescriptor[] =>

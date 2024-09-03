@@ -100,9 +100,16 @@
       [pageable]="{ pageSizes: [5, 10 , 20, 50],}"
       [pageSize]="state.take"
       [skip]="state.skip"
+      [selectable]="{checkboxOnly: true}"
+      [(selectedKeys)]="selectedKeys"
+      [kendoGridSelectBy]="'ProductID'"
       (pageChange)="pageChange($event)"
       (filterChange)="filterChange($event)">
-      <kendo-grid-column field="ProductID" title="ID" [width]="100" [filterable]="false">
+      <ng-template kendoGridToolbarTemplate position="top">
+        <button kendoButton (click)="onButtonClick()">Click</button>
+      </ng-template>
+      <kendo-grid-checkbox-column [showSelectAll]="true" [width]="40"></kendo-grid-checkbox-column>
+      <kendo-grid-column field="ProductID" title="ID" [width]="70" [filterable]="false" [style]="{'text-align': 'right'}">
       </kendo-grid-column>
       <kendo-grid-column field="ProductName" title="Product Name">
       </kendo-grid-column>

@@ -5,7 +5,8 @@
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
   },
   "projects": {
     "Csob.CreditsUniverse.Web.Js.Demo": {
