@@ -5,7 +5,8 @@
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
   },
   "projects": {
     "Csob.CreditsUniverse.Web.Js.Demo": {
@@ -107,7 +108,8 @@
               "buildTarget": "Csob.CreditsUniverse.Web.Js.Demo:build:production"
             },
             "development": {
-              "buildTarget": "Csob.CreditsUniverse.Web.Js.Demo:build:development"
+              "buildTarget": "Csob.CreditsUniverse.Web.Js.Demo:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
