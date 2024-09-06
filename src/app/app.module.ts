@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { Locale, localeData } from '@progress/kendo-angular-intl';
 import { AppRoutingModule } from './app-routing.module';
@@ -52,7 +53,9 @@ csData.calendar!.months!.format!.abbreviated = [
     SharedModule,
     AppRoutingModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'cs-CZ' }],
+  providers: [
+    provideHttpClient(),
+    { provide: LOCALE_ID, useValue: 'cs-CZ' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

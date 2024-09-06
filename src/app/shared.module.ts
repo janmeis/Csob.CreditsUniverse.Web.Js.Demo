@@ -16,33 +16,28 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export'; // Import 
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { TooltipModule } from '@progress/kendo-angular-tooltip'; // Import TooltipModule from the correct package
 import { TreeViewModule } from '@progress/kendo-angular-treeview';
-
-
-const kendoModules = [
-  ButtonGroupModule,
-  ButtonsModule,
-  DateInputsModule,
-  DialogModule,
-  DropDownsModule, // Add DropDownsModule to the imports array
-  GridModule,
-  InputsModule,
-  IntlModule,
-  LabelModule,
-  LayoutModule,
-  PDFExportModule,
-  PopupModule,
-  TooltipModule, // Add TooltipModule to the imports array
-  TreeViewModule,
-  WindowModule
-];
+import { UploadsModule } from '@progress/kendo-angular-upload'; // Import UploadsModule from the correct package
 
 @NgModule({
   declarations: [],
-  imports: [
-    ...kendoModules
-  ],
   exports: [
-    ...kendoModules,
+    ButtonGroupModule,
+    ButtonsModule,
+    DateInputsModule,
+    DialogModule,
+    DropDownsModule, // Add DropDownsModule to the imports array
+    GridModule,
+    InputsModule,
+    IntlModule,
+    LabelModule,
+    LayoutModule,
+    PDFExportModule,
+    PopupModule,
+    TooltipModule, // Add TooltipModule to the imports array
+    TreeViewModule,
+    UploadsModule,
+    WindowModule,
+
     BrowserModule,
     BrowserAnimationsModule, // Add BrowserAnimationsModule to imports
     CommonModule,

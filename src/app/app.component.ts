@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { CheckBoxComponent } from '@progress/kendo-angular-inputs';
+import { FileInfo, SelectEvent } from '@progress/kendo-angular-upload';
 import { CompositeFilterDescriptor, distinct, FilterDescriptor, process, State } from '@progress/kendo-data-query';
 import { sampleProducts } from './products';
 
+export interface StatementFileInfo extends FileInfo {
+  statementId: string;
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -43,6 +47,13 @@ export class AppComponent implements OnInit {
   } as State;
 
   categories: { text: string, value: number; descripiton: string; }[] = [];
+  selectedKeys: number[] = [];
+  readonly statementIds = [{ statementId: 'vykaz 1', accept: '.csv, .pdf' },
+  { statementId: 'vykaz 2', accept: '.jpg, .png' },
+  { statementId: 'vykaz 3', accept: '.pdf' },
+  { statementId: 'vykaz 4', accept: '.pdf' },
+  { statementId: 'vykaz 5', accept: '.pdf, .xls' }];
+  myFiles: StatementFileInfo[] = [];
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -99,6 +110,20 @@ export class AppComponent implements OnInit {
       filters = [...filters, { field: field, operator: 'eq', value: checkedState }];
     }
     this.filterChange({ logic: 'and', filters });
+  }
+
+  selectedKeysClick() {
+    console.log(this.selectedKeys);
+  }
+
+  selectEventHandler(statementId: string, selectEvent: SelectEvent) {
+    const file = { statementId: statementId, ...selectEvent.files[0] };
+    this.myFiles = [...this.myFiles.filter(f => f.statementId !== statementId), file]
+      .sort((a, b) => a.statementId.localeCompare(b.statementId));
+  }
+
+  removeEventHandler(statementId: string) {
+    this.myFiles = this.myFiles.filter(f => f.statementId !== statementId);
   }
 
   private removeFilter = (filter?: CompositeFilterDescriptor, field?: string): FilterDescriptor[] =>

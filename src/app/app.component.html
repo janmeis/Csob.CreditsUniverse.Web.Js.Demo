@@ -100,9 +100,16 @@
       [pageable]="{ pageSizes: [5, 10 , 20, 50],}"
       [pageSize]="state.take"
       [skip]="state.skip"
+      [selectable]="{ checkboxOnly: true }"
+      [kendoGridSelectBy]="'ProductID'"
+      [(selectedKeys)]="selectedKeys"
       (pageChange)="pageChange($event)"
       (filterChange)="filterChange($event)">
-      <kendo-grid-column field="ProductID" title="ID" [width]="100" [filterable]="false">
+      <ng-template kendoGridToolbarTemplate>
+        <button kendoButton [style.color]="'yellow'" [style.backgroundColor]="'green'" (click)="selectedKeysClick()">Selected: {{selectedKeys.length}}</button>
+      </ng-template>
+      <kendo-grid-checkbox-column [width]="40" [showSelectAll]="true"></kendo-grid-checkbox-column>
+      <kendo-grid-column field="ProductID" title="ID" [width]="70" [filterable]="false" [style]="{ 'text-align': 'right' }">
       </kendo-grid-column>
       <kendo-grid-column field="ProductName" title="Product Name">
       </kendo-grid-column>
@@ -138,4 +145,26 @@
       </kendo-grid-column>
     </kendo-grid>
   </div>
+
+  <ul>
+    @for(file of myFiles; track file.uid) {
+      <li><span [style.fontWeight]="'bold'">{{file.statementId}}</span>: {{ file.name }}</li>
+    }
+  </ul>
+
+  @for(statementId of statementIds; track statementId) {
+  <kendo-fileselect
+    [multiple]="false"
+    [accept]="statementId.accept"
+    (select)="selectEventHandler(statementId.statementId, $event)"
+    (remove)="removeEventHandler(statementId.statementId)"
+    >
+    <kendo-fileselect-messages
+      dropFilesHere=""
+      [select]="'Import vykazu ' + statementId.statementId">
+    </kendo-fileselect-messages>
+  </kendo-fileselect>
+  }
 </div>
+
+
